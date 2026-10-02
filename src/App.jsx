@@ -1,4 +1,4 @@
-import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
 import { DataProvider } from './context/DataContext';
 import { ToastProvider } from './context/ToastContext';
@@ -22,14 +22,14 @@ export default function App() {
         <ToastProvider>
           <ConfirmProvider>
             <AuthProvider>
-              <HashRouter>
+              <BrowserRouter>
                 <Routes>
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/admin" element={<ProtectedRoute role="admin"><AdminPage /></ProtectedRoute>} />
                   <Route path="/me" element={<ProtectedRoute role="user"><UserPage /></ProtectedRoute>} />
                   <Route path="*" element={<Home />} />
                 </Routes>
-              </HashRouter>
+              </BrowserRouter>
             </AuthProvider>
           </ConfirmProvider>
         </ToastProvider>

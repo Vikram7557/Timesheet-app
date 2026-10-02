@@ -147,13 +147,14 @@ editing or voiding time entries (a correction-entry workflow would be the next s
 
 ## Deploy
 
-`npm run build` outputs a static site in `dist/`. Vite is set to `base: './'` and the app uses HashRouter, so it works
-on Vercel, Netlify, GitHub Pages, or any folder/static host without rewrite rules.
+`npm run build` outputs a static site in `dist/`. Routes are real paths (`/login`, `/admin`, `/me`), so the host must
+serve `index.html` for those URLs (already configured for Vercel and Netlify).
 
-**Vercel:** import the Git repo (or `npx vercel`). `vercel.json` already sets the build command and `dist` output.
+**Vercel:** import the Git repo (or `npx vercel`). `vercel.json` sets the build, `dist` output, and SPA rewrites.
 
-**Netlify:** import the Git repo (or drag the `dist` folder). `netlify.toml` already sets `npm run build` and `publish = dist`.
+**Netlify:** import the Git repo (or drag the `dist` folder). `netlify.toml` sets `npm run build`, `publish = dist`,
+and a 200 rewrite of `/*` to `index.html`.
 
-**GitHub Pages:** build, then publish the `dist` folder (or use the `gh-pages` branch). Open the site at `…/index.html#/login`.
+**GitHub Pages:** project sites under a subpath need extra setup; a custom domain or a user/org site at the root is simpler.
 
 After deploy, each visitor gets their own LocalStorage copy. Demo data is not shared between browsers.

@@ -17,7 +17,7 @@ export default class ErrorBoundary extends Component {
         <p>The page hit an unexpected problem. Your data is safe. Reload to continue.</p>
         <div className="row">
           <button className="btn btn-primary" onClick={() => window.location.reload()}>Reload</button>
-          <button className="btn" onClick={() => { clearSession(); window.location.hash = '#/login'; window.location.reload(); }}>
+          <button className="btn" onClick={() => { clearSession(); window.location.assign('/login'); }}>
             Sign out and reload
           </button>
         </div>

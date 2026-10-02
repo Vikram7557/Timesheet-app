@@ -7,7 +7,7 @@ beforeEach(() => {
   cleanup();
   localStorage.clear();
   sessionStorage.clear();
-  window.location.hash = '#/login';
+  window.history.replaceState({}, '', '/login');
   window.matchMedia = window.matchMedia || (() => ({ matches: false, addListener() { }, removeListener() { } }));
 });
 
@@ -71,8 +71,9 @@ describe('app smoke tests', () => {
     expect(screen.queryByRole('button', { name: 'Build task list API' })).toBeNull(); // Nivas's task
     expect(screen.queryByRole('button', { name: 'Duplicate: login wireframes' })).toBeNull(); // deleted
 
-    window.location.hash = '#/admin';
-    await waitFor(() => expect(window.location.hash).toBe('#/me'));
+    window.history.pushState({}, '', '/admin');
+    window.dispatchEvent(new PopStateEvent('popstate'));
+    await waitFor(() => expect(window.location.pathname).toBe('/me'));
 
     await user.click(screen.getByRole('button', { name: 'Write onboarding guide' }));
     const dlg = await screen.findByRole('dialog', { name: /TSK-/ });
