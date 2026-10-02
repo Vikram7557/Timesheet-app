@@ -17,10 +17,13 @@ npm run build      # production build in /dist (static, host anywhere)
 
 | Employee ID | Name | Role |
 |---|---|---|
-| EMP001 | Meera Iyer | Admin |
-| EMP002 | Arjun Nair | Admin |
-| EMP101 to EMP104 | Priya, Rahul, Divya, Sanjay | User |
-| EMP105 | Naveen Raj | Removed user (used to demo restore-with-new-assignee) |
+| EMP001 | Veeramanigandan | Admin |
+| EMP002 | Satheesh | Admin |
+| EMP101 | Vivek | User |
+| EMP102 | Nivas | User |
+| EMP103 | Anand | User |
+| EMP104 | Vikram | User |
+| EMP105 | Rajasekar | Removed (demo: restore a deleted task that needs a new assignee) |
 
 Tip: sessions are per browser tab, so you can be Admin in one tab and a User in another at the same time.
 
@@ -98,7 +101,7 @@ turn the session into a JWT, and move the permission checks into middleware. The
 - Deleted tasks disappear from every normal list, from the user's workspace and from user timesheets.
 - They stay visible to admins in the **Deleted** tab (including hours and comments) and can be restored.
 - Deleted tasks are read-only: no edits, reassignment, comments or hours until restored.
-- Restoring when the old assignee was removed forces choosing a new assignee.
+- Restoring when the old assignee was removed forces choosing a new assignee. In the demo, that is Rajasekar (EMP105) and the deleted task **Vendor invoice reconciliation**.
 - A test asserts the service API has no delete/purge/remove-record function.
 
 **Removing users** = deactivating (`isActive:false`). Hard-deleting would orphan their comments and hours.

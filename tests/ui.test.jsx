@@ -21,7 +21,7 @@ describe('app smoke tests', () => {
   it('admin: walks every tab without crashing, deletes and restores a task', async () => {
     const user = userEvent.setup();
     const errSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
-    await loadDemoAndLogin(user, 'Meera Iyer');
+    await loadDemoAndLogin(user, 'Veeramanigandan');
 
     for (const t of ['Dashboard', 'Tasks', 'Users', 'Deleted', 'Timesheet', 'Calendar', 'Settings']) {
       await user.click(await screen.findByRole('tab', { name: t }));
@@ -56,7 +56,7 @@ describe('app smoke tests', () => {
 
   it('admin: create-task form shows validation errors instead of crashing', async () => {
     const user = userEvent.setup();
-    await loadDemoAndLogin(user, 'Meera Iyer');
+    await loadDemoAndLogin(user, 'Veeramanigandan');
     await user.click(screen.getByRole('button', { name: 'New task' }));
     const dlg = await screen.findByRole('dialog', { name: 'New task' });
     await user.click(within(dlg).getByRole('button', { name: 'Create task' }));
@@ -66,9 +66,9 @@ describe('app smoke tests', () => {
 
   it('user: sees only own tasks, logs hours with validation, and cannot reach /admin', async () => {
     const user = userEvent.setup();
-    await loadDemoAndLogin(user, 'Priya Sharma');
+    await loadDemoAndLogin(user, 'Vivek');
     expect(await screen.findByRole('button', { name: 'Write onboarding guide' })).toBeTruthy();
-    expect(screen.queryByRole('button', { name: 'Build task list API' })).toBeNull(); // Rahul's task
+    expect(screen.queryByRole('button', { name: 'Build task list API' })).toBeNull(); // Nivas's task
     expect(screen.queryByRole('button', { name: 'Duplicate: login wireframes' })).toBeNull(); // deleted
 
     window.location.hash = '#/admin';
@@ -96,7 +96,7 @@ describe('app smoke tests', () => {
 
   it('sign out clears only the session, and another user can then sign in', async () => {
     const user = userEvent.setup();
-    await loadDemoAndLogin(user, 'Priya Sharma');
+    await loadDemoAndLogin(user, 'Vivek');
     await user.click(await screen.findByRole('button', { name: 'Sign out' }));
     expect(sessionStorage.getItem('tms_session')).toBeNull();
     expect(JSON.parse(localStorage.getItem('tms_tasks')).length).toBeGreaterThan(0);
@@ -115,7 +115,7 @@ describe('app smoke tests', () => {
 
   it('admin: restoring a deleted task whose assignee was removed requires a new assignee', async () => {
     const user = userEvent.setup();
-    await loadDemoAndLogin(user, 'Meera Iyer');
+    await loadDemoAndLogin(user, 'Veeramanigandan');
     await user.click(screen.getByRole('tab', { name: 'Deleted' }));
     const title = await screen.findByText('Vendor invoice reconciliation');
     const row = title.closest('tr');
@@ -126,7 +126,7 @@ describe('app smoke tests', () => {
     expect(await within(restore).findByText(/choose who this task should be assigned to/i)).toBeTruthy();
     await user.selectOptions(
       within(restore).getByLabelText('Assign to'),
-      within(restore).getByRole('option', { name: /Priya Sharma/ }),
+      within(restore).getByRole('option', { name: /Vivek/ }),
     );
     await user.click(within(restore).getByRole('button', { name: 'Restore task' }));
     await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Restore task' })).toBeNull());
@@ -136,9 +136,9 @@ describe('app smoke tests', () => {
 
   it('admin: removing another admin asks for two confirmations and keeps them if cancelled', async () => {
     const user = userEvent.setup();
-    await loadDemoAndLogin(user, 'Meera Iyer');
+    await loadDemoAndLogin(user, 'Veeramanigandan');
     await user.click(screen.getByRole('tab', { name: 'Users' }));
-    const row = (await screen.findByText('Arjun Nair')).closest('tr');
+    const row = (await screen.findByText('Satheesh')).closest('tr');
     await user.click(within(row).getByRole('button', { name: 'Remove admin' }));
     const first = await screen.findByRole('dialog', { name: 'Remove an admin?' });
     await user.click(within(first).getByRole('button', { name: 'Cancel' }));
@@ -151,7 +151,7 @@ describe('app smoke tests', () => {
     const second = await screen.findByRole('dialog', { name: 'Confirm remove admin' });
     await user.click(within(second).getByRole('button', { name: 'Remove admin' }));
     await waitFor(() => {
-      const removedRow = screen.getByText('Arjun Nair').closest('tr');
+      const removedRow = screen.getByText('Satheesh').closest('tr');
       expect(within(removedRow).getByRole('button', { name: 'Reactivate' })).toBeTruthy();
     });
     expect(screen.queryByRole('button', { name: 'Remove admin' })).toBeNull();
